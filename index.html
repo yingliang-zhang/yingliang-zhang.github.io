@@ -89,7 +89,6 @@
             ],
 
             // Author Webpages Mapping
-            // Add or update author links here. Names should match those in the publications list exactly (without * or †).
             authorLinks: {
                 "Jingyi Yu": "http://www.yu-jingyi.com/",
                 "Lan Xu": "http://xu-lan.com/",
@@ -109,7 +108,6 @@
                 "Yize Wu": "https://github.com/wuyize25/",
                 "Weihang Liu": "https://weihangliu2024.github.io/",
                 "Yuke Li": "https://liyuke.cn/"
-                // Add more authors as needed...
             },
 
             // papers
@@ -279,7 +277,6 @@
             // Helper to render authors with links
             const renderAuthors = (authorStr) => {
                 return authorStr.split(', ').map((author, index, array) => {
-                    // Extract name and special marks (*, †)
                     const match = author.match(/^([^*†]+)([*†]*)$/);
                     if (!match) return author;
 
@@ -466,7 +463,9 @@
                                 <div className="space-y-6 text-left">
                                     {WEBSITE_DATA.honors.map((honor, i) => (
                                         <div key={i} className="flex gap-6 items-baseline group">
-                                            <span className="text-xs font-black text-gray-300 dark:text-gray-700 w-10 uppercase tracking-tighter shrink-0 transition-colors group-hover:text-blue-500/50">{honor.year}</span>
+                                            <span className="text-xs font-bold text-gray-400 dark:text-gray-500 w-10 uppercase tracking-tighter shrink-0 transition-colors group-hover:text-blue-600 dark:group-hover:text-blue-400">
+                                                {honor.year}
+                                            </span>
                                             <p className="text-sm font-bold text-gray-800 dark:text-gray-200 flex-1 leading-tight">{honor.title}</p>
                                         </div>
                                     ))}
