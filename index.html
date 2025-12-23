@@ -88,6 +88,30 @@
                 "Computational Imaging", "Volumetric Capture"
             ],
 
+            // Author Webpages Mapping
+            // Add or update author links here. Names should match those in the publications list exactly (without * or †).
+            authorLinks: {
+                "Jingyi Yu": "http://www.yu-jingyi.com/",
+                "Lan Xu": "http://xu-lan.com/",
+                "Marc Habermann": "https://people.mpi-inf.mpg.de/~mhaberma/",
+                "Christian Theobalt": "https://people.mpi-inf.mpg.de/~theobalt/",
+                "Yujiao Shi": "https://yujiaoshi.github.io/",
+                "Xin Lou": "https://sist.shanghaitech.edu.cn/louxin/main.htm",
+                "Zhuo Su": "https://suzhuo.github.io/",
+                "Jiakai Zhang": "https://jiakai-zhang.github.io/",
+                "Fuqiang Zhao": "https://zhaofuq.github.io/",
+                "Haimin Luo": "https://haiminluo.github.io/",
+                "Liao Wang": "https://aoliao12138.github.io/",
+                "Yuheng Jiang": "https://nowheretrix.github.io/",
+                "Zhehao Shen": "https://moqiyinlun.github.io/",
+                "Hong Yu": "https://github.com/xyi1023",
+                "Chengcheng Guo": "https://guochch.github.io/",
+                "Yize Wu": "https://github.com/wuyize25/",
+                "Weihang Liu": "https://weihangliu2024.github.io/",
+                "Yuke Li": "https://liyuke.cn/"
+                // Add more authors as needed...
+            },
+
             // papers
             publications: [
                 {
@@ -196,7 +220,6 @@
             education: [
                 { school: "ShanghaiTech University", degree: "Ph.D.", period: "2014 - 2019", honor: "Outstanding Graduate" },
                 { school: "University of Delaware", degree: "Visiting Scholar", period: "2017" }
-                // ,{ school: "Ningbo University", degree: "B.Eng.", period: "2010 - 2014" }
             ],
 
             // Honors
@@ -252,6 +275,32 @@
             };
 
             const fullEmail = `${WEBSITE_DATA.emailConfig.user}@${WEBSITE_DATA.emailConfig.domain}`;
+
+            // Helper to render authors with links
+            const renderAuthors = (authorStr) => {
+                return authorStr.split(', ').map((author, index, array) => {
+                    // Extract name and special marks (*, †)
+                    const match = author.match(/^([^*†]+)([*†]*)$/);
+                    if (!match) return author;
+
+                    const namePart = match[1].trim();
+                    const markPart = match[2];
+                    const link = WEBSITE_DATA.authorLinks[namePart];
+                    const isMe = namePart.includes("Yingliang Zhang");
+
+                    const nameElement = link ? (
+                        <a href={link} target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition-colors">
+                            {namePart}
+                        </a>
+                    ) : namePart;
+
+                    return (
+                        <span key={index} className={isMe ? "font-bold text-gray-900 dark:text-gray-100 underline decoration-blue-500/30 underline-offset-4" : ""}>
+                            {nameElement}{markPart}{index < array.length - 1 ? ', ' : ''}
+                        </span>
+                    );
+                });
+            };
 
             return (
                 <div className="min-h-screen bg-white dark:bg-slate-950 transition-colors duration-300 font-sans text-left">
@@ -337,7 +386,6 @@
                             <div className="space-y-10">
                                 {WEBSITE_DATA.publications.map((pub, i) => (
                                     <div key={i} className="flex flex-col md:flex-row gap-8 group publication-card text-left">
-                                        {/* Updated Thumbnail Section for wide images with object-contain */}
                                         <div className="w-full md:w-80 shrink-0 aspect-[2.5/1] rounded-xl overflow-hidden bg-gray-50/50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 shadow-sm transition-all group-hover:shadow-md flex items-center justify-center p-1">
                                             <img
                                                 src={pub.image}
@@ -347,7 +395,6 @@
                                             />
                                         </div>
                                         <div className="flex-1 flex flex-col justify-center">
-                                            {/* Adjusted Venue text with optional Highlight badge */}
                                             <div className="flex items-center gap-3 mb-3 leading-none">
                                                 <div className="text-[13px] font-bold text-blue-600 dark:text-blue-400 uppercase">{pub.venue}</div>
                                                 {pub.highlight && (
@@ -358,11 +405,7 @@
                                             </div>
                                             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 leading-tight group-hover:text-blue-600 transition-colors">{pub.title}</h3>
                                             <p className="text-gray-600 dark:text-gray-400 text-sm mb-2 leading-relaxed">
-                                                {pub.authors.split(', ').map((author, j) => (
-                                                    <span key={j} className={author.includes("Yingliang Zhang") ? "font-bold text-gray-900 dark:text-gray-100 underline decoration-blue-500/30 underline-offset-4" : ""}>
-                                                        {author}{j < pub.authors.split(', ').length - 1 ? ', ' : ''}
-                                                    </span>
-                                                ))}
+                                                {renderAuthors(pub.authors)}
                                             </p>
                                             {pub.note && <p className="text-xs text-blue-600 dark:text-blue-400 italic font-medium mb-4">{pub.note}</p>}
                                             <div className="flex flex-wrap items-center gap-3">
@@ -413,7 +456,6 @@
                                             <h4 className="font-bold text-gray-900 dark:text-white text-lg leading-tight">{edu.school}</h4>
                                             <p className="text-sm text-gray-600 dark:text-gray-400 font-bold">{edu.degree}</p>
                                             <p className="text-xs text-gray-400 mt-1 font-bold uppercase tracking-widest">{edu.period}</p>
-                                            {/* Fix: Display honor if it exists */}
                                             {edu.honor && <p className="text-xs text-blue-600 dark:text-blue-400 mt-1 italic font-medium">{edu.honor}</p>}
                                         </div>
                                     ))}
@@ -434,7 +476,9 @@
 
                         {/* Footer */}
                         <footer className="mt-24 pt-10 border-t border-gray-100 dark:border-gray-800 text-center">
-                            <p className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">© {new Date().getFullYear()} {WEBSITE_DATA.name}</p>
+                            <p className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">
+                                © {new Date().getFullYear()} <span className="inline-block whitespace-nowrap">{WEBSITE_DATA.name}</span>
+                            </p>
                             <p className="text-[10px] text-gray-300 dark:text-gray-600 mt-2 uppercase tracking-[0.2em] font-medium font-mono">yingliangzhang.com • hosted on yingliang-zhang.github.io</p>
                         </footer>
                     </main>
